@@ -1,33 +1,21 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "app-flytrip-web",
-  "main": "./src/worker/index.ts",
+  "main": "src/worker/index.ts",
   "compatibility_date": "2026-06-23",
   "compatibility_flags": ["nodejs_compat"],
-  
   "observability": {
-    "logs": {
-      "enabled": true,
-      "invocation_logs": true
-    },
-    "traces": {
-      "enabled": false
-    }
+    "logs": { "enabled": true, "invocation_logs": true },
+    "traces": { "enabled": false }
   },
-
-  "d1_databases": [
-    {
-      "binding": "flytripvisa_db",
-      "database_name": "flytripvisa_db",
-      "database_id": "26c063fe-1868-44b1-9a8c-a68eecfa18e7"
-    }
-  ],
-
+  "d1_databases": [{
+    "binding": "flytripvisa_db",
+    "database_name": "flytripvisa_db",
+    "database_id": "26c063fe-1868-44b1-9a8c-a68eecfa18e7"
+  }],
   "assets": {
-    "directory": "./dist/client",
+    "directory": "src/react-app/dist",
     "binding": "ASSETS",
     "not_found_handling": "single-page-application"
-  },
-
-  "upload_source_maps": true
+  }
 }
