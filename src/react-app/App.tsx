@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-
 export default function App() {
   const [isAdmin, setIsAdmin] = useState(localStorage.getItem("isAdmin") === "true");
   const [visaData, setVisaData] = useState([{ id: 1, country: "দুবাই", price: "৯,৫০০ ৳" }]);
