@@ -5,12 +5,16 @@
   "compatibility_date": "2026-06-23",
   "compatibility_flags": ["nodejs_compat"],
   
-  // Observability configuration
   "observability": {
-    "enabled": true
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true
+    },
+    "traces": {
+      "enabled": false
+    }
   },
 
-  // D1 Database Binding
   "d1_databases": [
     {
       "binding": "flytripvisa_db",
@@ -19,13 +23,11 @@
     }
   ],
 
-  // Assets Configuration
   "assets": {
     "directory": "./dist/client",
     "binding": "ASSETS",
     "not_found_handling": "single-page-application"
   },
 
-  // Source Maps for debugging
   "upload_source_maps": true
 }
