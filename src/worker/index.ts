@@ -18,11 +18,10 @@ app.get('/api/admin/data', async (c) => {
   }
 });
 
-// ফিক্সড স্ট্যাটিক ফাইল হ্যান্ডলার
+// স্ট্যাটিক ফাইল হ্যান্ডলার
 app.get('/*', async (c, next) => {
   return serveStatic({ 
     root: './',
-    // ASSETS বাইন্ডিংয়ের মাধ্যমে ফাইল সার্ভ করা হচ্ছে
     manifest: (await import('__STATIC_CONTENT_MANIFEST')).default 
   })(c, next);
 });
