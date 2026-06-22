@@ -1,6 +1,17 @@
 import { Hono } from "hono";
-const app = new Hono<{ Bindings: Env }>();
+import { serveStatic } from "hono/cloudflare-workers";
 
-app.get("/api/", (c) => c.json({ name: "Cloudflare" }));
+// Env টাইপ ডেফিনিশন (আপনার প্রজেক্ট অনুযায়ী)
+type Bindings = {
+  ASSETS: Fetcher;
+}
+
+const app = new Hono<{ Bindings: Bindings }>();
+
+// API রাউট
+app.get("/api/", (c) => c.json({ name: "FlyTripAdmin" }));
+
+// কনফিগারেশন: রুট ইউআরএল এ ইনডেক্স ফাইল সার্ভ করা
+app.get("/*", serveStatic({ root: "./" }));
 
 export default app;
