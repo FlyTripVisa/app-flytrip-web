@@ -1,36 +1,45 @@
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-interface VisaApp { id: number; email: string; country: string; status: string; }
+const AdminDashboard: React.FC = () => {
+    // স্টেট ম্যানেজমেন্ট
+    const [visaApps, setVisaApps] = useState([]);
+    const [flights, setFlights] = useState([]);
+    const [hotels, setHotels] = useState([]);
 
-export default function AdminDashboard() {
-  const [data, setData] = useState<VisaApp[]>([]);
-  const [loading, setLoading] = useState(true);
+    // ডেটা লোড লজিক
+    useEffect(() => {
+        const loadAdminData = () => {
+            const storedVisas = JSON.parse(localStorage.getItem('fly_apps') || '[]');
+            setVisaApps(storedVisas);
+        };
+        loadAdminData();
+    }, []);
 
-  useEffect(() => {
-    fetch('/api/admin/data')
-      .then(res => res.json())
-      .then(json => {
-        setData(Array.isArray(json) ? json : []);
-        setLoading(false);
-      })
-      .catch(err => { console.error(err); setLoading(false); });
-  }, []);
+    // অনুমোদন/বাতিল লজিক
+    const handleStatusUpdate = (id: string, status: string) => {
+        const updatedApps = visaApps.map((app: any) => 
+            app.id === id ? { ...app, status } : app
+        );
+        setVisaApps(updatedApps);
+        localStorage.setItem('fly_apps', JSON.stringify(updatedApps));
+    };
 
-  return (
-    <div className="admin-container" style={{ padding: '20px' }}>
-      <h1>🛠 অ্যাডমিন ড্যাশবোর্ড</h1>
-      {loading ? <p>লোড হচ্ছে...</p> : (
-        <table border={1} style={{ width: '100%' }}>
-          <thead><tr><th>ID</th><th>ইমেইল</th><th>দেশ</th><th>স্ট্যাটাস</th></tr></thead>
-          <tbody>
-            {data.map(item => (
-              <tr key={item.id}>
-                <td>{item.id}</td><td>{item.email}</td><td>{item.country}</td><td>{item.status}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
-  );
-}
+    return (
+        <div className="admin-view">
+            <h2>🛠 অ্যাডমিন প্যানেল</h2>
+            {/* এখানে আপনার অ্যাডমিন সেকশন এবং লুপগুলো বসবে */}
+            <div className="admin-section">
+                <h4 className="admin-section-title">📋 ভিসা আবেদন লিস্ট</h4>
+                {visaApps.map((app: any) => (
+                    <div key={app.id} className="data-item">
+                        <div>{app.country} - {app.status}</div>
+                        <button onClick={() => handleStatusUpdate(app.id, 'Approved')}>✅</button>
+                        <button onClick={() => handleStatusUpdate(app.id, 'Rejected')}>❌</button>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+export default AdminDashboard;
