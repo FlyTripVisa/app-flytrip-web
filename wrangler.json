@@ -1,15 +1,31 @@
 {
-	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "app-flytrip-web",
-	"main": "./src/worker/index.ts",
-	"compatibility_date": "2025-10-08",
-	"compatibility_flags": ["nodejs_compat"],
-	"observability": {
-		"enabled": true
-	},
-	"upload_source_maps": true,
-	"assets": {
-		"directory": "./dist/client",
-		"not_found_handling": "single-page-application"
-	}
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "app-flytrip-web",
+  "main": "./src/worker/index.ts",
+  "compatibility_date": "2026-06-23",
+  "compatibility_flags": ["nodejs_compat"],
+  
+  // Observability configuration
+  "observability": {
+    "enabled": true
+  },
+
+  // D1 Database Binding
+  "d1_databases": [
+    {
+      "binding": "flytripvisa_db",
+      "database_name": "flytripvisa_db",
+      "database_id": "26c063fe-1868-44b1-9a8c-a68eecfa18e7"
+    }
+  ],
+
+  // Assets Configuration
+  "assets": {
+    "directory": "./dist/client",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application"
+  },
+
+  // Source Maps for debugging
+  "upload_source_maps": true
 }
