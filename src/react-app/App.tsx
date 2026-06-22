@@ -1,26 +1,50 @@
 import { useState, useEffect } from 'react';
-import Header from './components/Header';
-import VisaList from './components/VisaList';
-import AdminDashboard from './components/AdminDashboard';
-import './App.css';
 
-function App() {
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [view, setView] = useState('home');
+export default function App() {
+  const [isAdmin, setIsAdmin] = useState(localStorage.getItem("isAdmin") === "true");
+  const [view, setView] = useState("home");
+
+  const loginAdmin = () => {
+    localStorage.setItem("isAdmin", "true");
+    setIsAdmin(true);
+  };
+
+  const logoutAdmin = () => {
+    localStorage.removeItem("isAdmin");
+    setIsAdmin(false);
+  };
 
   return (
     <div className="main-wrapper">
-      <Header setView={setView} setIsAdmin={setIsAdmin} />
-      
+      <header className="glass-header">
+        <div className="logo">✈ FLYTRIP</div>
+        <button onClick={isAdmin ? logoutAdmin : loginAdmin}>
+          {isAdmin ? "ইউজার মোড" : "অ্যাডমিন লগইন"}
+        </button>
+      </header>
+
       {isAdmin ? (
-        <AdminDashboard />
+        <AdminPanel />
       ) : (
-        <main>
-          {view === 'home' && <VisaList />}
-          {/* অন্য ট্যাবগুলো এখানে কন্ডিশনালি রেন্ডার হবে */}
-        </main>
+        <div className="content">
+          <h1>স্বাগতম ফ্লাইট্রিপ গ্রুপে</h1>
+          <button onClick={() => fetch("/api/admin/data").then(r => r.json()).then(console.log)}>
+            ডেটা লোড
+          </button>
+        </div>
       )}
     </div>
   );
 }
-export default App;
+
+function AdminPanel() {
+  return (
+    <div className="admin-view" style={{display: 'block', padding: '20px'}}>
+      <h2>🛠 অ্যাডমিন প্যানেল</h2>
+      <div className="admin-section">
+        <input className="admin-input" placeholder="নতুন ভিসা এন্ট্রি" />
+        <button className="admin-submit-btn">সেভ করুন</button>
+      </div>
+    </div>
+  );
+}
